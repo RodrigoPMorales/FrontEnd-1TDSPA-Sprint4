@@ -38,11 +38,13 @@ npm install
 
 ### 3. Configure as variáveis de ambiente
 
-Crie um arquivo `.env` na raiz do projeto caso esteja executando localmente com as seguintes variáveis:
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 \`\`\`
-NEXT_PUBLIC_API_URL=http://localhost:8080/api
-API_URL=http://localhost:8080/api
+NEXT_PUBLIC_API_URL=https://ccr-api-snk9.onrender.com/api
+DB_URL=jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
+DB_USER=rm559617
+DB_PASSWORD=180794
 \`\`\`
 
 Ajuste as URLs conforme necessário para apontar para o seu backend.
