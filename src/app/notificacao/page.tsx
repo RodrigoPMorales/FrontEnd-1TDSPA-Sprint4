@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { getAllIncidentes, Gravidade } from "@/services/incidente-service"
@@ -24,13 +24,8 @@ export default function Notificacao() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Load unresolved incidents when component mounts
-  useEffect(() => {
-    loadUnresolvedIncidents()
-  }, [])
-
-  // Function to load unresolved incidents from API
-  const loadUnresolvedIncidents = async () => {
+  // Use useCallback to memoize the function
+  const loadUnresolvedIncidents = useCallback(async () => {
     setIsLoading(true)
     setError(null)
 
@@ -78,16 +73,7 @@ export default function Notificacao() {
           }
 
           // Otherwise, use a placeholder based on severity
-          switch (incident.gravidade) {
-            case Gravidade.ALTA:
-              return "/imagens/default-image.png"
-            case Gravidade.MEDIA:
-              return "/imagens/default-image.png"
-            case Gravidade.BAIXA:
-              return "/imagens/default-image.png"
-            default:
-              return "/imagens/default-image.png"
-          }
+          return "/imagens/default-image.png"
         }
 
         // Create notification title based on incident type and severity
@@ -113,7 +99,12 @@ export default function Notificacao() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
+
+  // Load unresolved incidents when component mounts
+  useEffect(() => {
+    loadUnresolvedIncidents()
+  }, [loadUnresolvedIncidents])
 
   // Function to get severity badge color
   const getSeverityBadgeColor = (gravidade: string) => {

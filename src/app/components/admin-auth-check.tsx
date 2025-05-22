@@ -2,48 +2,30 @@
 
 import type React from "react"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { useAuth } from "@/context/auth-context"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { UserRole } from "@/context/auth-context"
 
 export default function AdminAuthCheck({ children }: { children: React.ReactNode }) {
-  const { user, isLoading, isAdmin } = useAuth()
+  const { isAuthorized, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    // Só executa se o usuario não for um admin
-    if (!isLoading && !isAdmin) {
+    // Only check after loading is complete
+    if (!isLoading && !isAuthorized([UserRole.ADMIN, UserRole.MANAGER])) {
       router.push("/login?error=unauthorized")
     }
-  }, [isLoading, isAdmin, router])
+  }, [isAuthorized, isLoading, router])
 
-  // loading da pagina
+  // Show loading state while checking authorization
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-700">Verificando acesso...</h2>
-          <p className="text-gray-500 mt-2">Por favor, aguarde enquanto verificamos suas credenciais.</p>
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#9D1919]"></div>
       </div>
     )
   }
 
-  // Se não for admin, não mostra nada e redireciona para login
-  if (!isAdmin) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-700">Redirecionando...</h2>
-          <p className="text-gray-500 mt-2">Você não tem permissão para acessar esta área.</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Se for admin, mostra a pagina
   return <>{children}</>
 }
-

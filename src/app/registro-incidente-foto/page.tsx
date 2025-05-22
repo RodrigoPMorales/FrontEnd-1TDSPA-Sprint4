@@ -7,13 +7,6 @@ import Image from "next/image"
 import { useAuth } from "@/context/auth-context"
 import { uploadImage } from "@/app/actions/upload-image"
 
-// Define enum for Gravidade to match backend
-enum GravidadeEnum {
-  BAIXA = "BAIXA",
-  MEDIA = "MEDIA",
-  ALTA = "ALTA",
-}
-
 export default function RegistroIncidente() {
   const router = useRouter()
   const { user } = useAuth()
@@ -267,7 +260,7 @@ export default function RegistroIncidente() {
                 {imagemPreview ? (
                   <div className="relative w-full h-full">
                     <Image
-                      src={imagemPreview || "/placeholder.svg"}
+                      src={imagemPreview || "/imagens/default-image.png"}
                       alt="Prévia da imagem do incidente"
                       fill
                       className="object-contain"

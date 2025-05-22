@@ -5,17 +5,17 @@ import { join } from "path"
 import { mkdir } from "fs/promises"
 
 /**
- * Gera um ID único para nomes de arquivos
- * Esta é uma alternativa caso o UUID não esteja disponível
+ * Generates a unique ID for filenames
+ * This is a fallback in case uuid is not available
  */
 function generateUniqueId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substring(2)
 }
 
 /**
- * Faz o upload de uma imagem para o diretório public/imagens/incidente
- * @param formData FormData contendo o arquivo de imagem
- * @returns O caminho para a imagem salva
+ * Uploads an image to the public/imagens/incidente directory
+ * @param formData FormData containing the image file
+ * @returns The path to the saved image
  */
 export async function uploadImage(formData: FormData): Promise<string | null> {
   try {
@@ -25,42 +25,42 @@ export async function uploadImage(formData: FormData): Promise<string | null> {
       return null
     }
 
-    // Cria um diretoria caso não exista
+    // Create directory if it doesn't exist
     const dirPath = join(process.cwd(), "public", "imagens", "incidente")
     try {
       await mkdir(dirPath, { recursive: true })
-    } catch (err) {
+    } catch (_) {
       console.log("Directory already exists or cannot be created")
     }
 
-    // Gera um nome de arquivo único para evitar sobrescrita
+    // Generate a unique filename to prevent overwriting
     const fileExtension = file.name.split(".").pop()
 
-    // Tenta usar uuid se estiver disponível, caso contrário usa nossa função alternativa
+    // Try to use uuid if available, otherwise use our fallback function
     let uniqueId
     try {
-      // Importação dinâmica para evitar erros de build se o uuid não estiver instalado
+      // Dynamic import to avoid build errors if uuid is not installed
       const { v4: uuidv4 } = await import("uuid")
       uniqueId = uuidv4()
-    } catch (error) {
-      // Recurso alternativo para nosso gerador simples de ID único
+    } catch (_) {
+      // Fallback to our simple unique ID generator
       uniqueId = generateUniqueId()
     }
 
     const fileName = `${uniqueId}.${fileExtension}`
     const filePath = join(dirPath, fileName)
 
-    // Converte o arquivo para um Buffer
+    // Convert the file to a Buffer
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Escreve o arquivo no diretório public/imagens/incidente
+    // Write the file to the public/imagens/incidente directory
     await writeFile(filePath, buffer)
 
-    // Retorna o caminho relativo ao diretório public
+    // Return the path relative to the public directory
     return `/imagens/incidente/${fileName}`
-  } catch (error) {
-    console.error("Error uploading image:", error)
+  } catch (err) {
+    console.error("Error uploading image:", err)
     throw new Error("Failed to upload image")
   }
 }
