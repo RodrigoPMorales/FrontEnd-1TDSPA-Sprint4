@@ -29,7 +29,7 @@ export async function uploadImage(formData: FormData): Promise<string | null> {
     const dirPath = join(process.cwd(), "public", "imagens", "incidente")
     try {
       await mkdir(dirPath, { recursive: true })
-    } catch (_) {
+    } catch {
       console.log("Directory already exists or cannot be created")
     }
 
@@ -42,7 +42,7 @@ export async function uploadImage(formData: FormData): Promise<string | null> {
       // Dynamic import to avoid build errors if uuid is not installed
       const { v4: uuidv4 } = await import("uuid")
       uniqueId = uuidv4()
-    } catch (_) {
+    } catch {
       // Fallback to our simple unique ID generator
       uniqueId = generateUniqueId()
     }
@@ -59,8 +59,8 @@ export async function uploadImage(formData: FormData): Promise<string | null> {
 
     // Return the path relative to the public directory
     return `/imagens/incidente/${fileName}`
-  } catch (err) {
-    console.error("Error uploading image:", err)
+  } catch (error) {
+    console.error("Error uploading image:", error)
     throw new Error("Failed to upload image")
   }
 }

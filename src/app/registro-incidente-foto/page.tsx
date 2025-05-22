@@ -84,7 +84,7 @@ export default function RegistroIncidente() {
       console.log("Sending incident data:", incidenteData)
 
       // Send data to backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/incidentes`, {
+      const response = await fetch("http://localhost:8080/api/incidentes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,8 +105,8 @@ export default function RegistroIncidente() {
       let data = null
       try {
         data = responseText ? JSON.parse(responseText) : null
-      } catch (e) {
-        console.error("Failed to parse response as JSON:", e)
+      } catch (error) {
+        console.error("Failed to parse response as JSON:", error)
       }
 
       if (!response.ok) {
