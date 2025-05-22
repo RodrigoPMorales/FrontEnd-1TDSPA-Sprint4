@@ -182,7 +182,7 @@ export default function Historico() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Histórico de Incidentes</h1>
         </div>
         <button
-          onClick={() => router.push("/registro-incidente")}
+          onClick={() => router.push("/selecao-incidente")}
           className="bg-[#9D1919] hover:bg-[#b11c1c] text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 flex items-center text-sm"
         >
           <i className="fa-solid fa-plus mr-2"></i>
