@@ -383,7 +383,7 @@ export default function Historico() {
                         <h3 className="text-lg font-semibold text-gray-800">{incident.nome}</h3>
                         <div className="flex items-center mt-1 md:mt-0">
                           <span className="text-xs text-gray-500 mr-2">
-                            {formatDate(incident.createdAt)} às {formatTime(incident.createdAt)}
+                            {formatDate(incident.createdAt)}  {formatTime(incident.createdAt)}
                           </span>
                           <span
                             className={`text-xs px-2 py-1 rounded-full font-medium ${
