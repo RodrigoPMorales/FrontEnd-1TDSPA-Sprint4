@@ -230,3 +230,4 @@ Para suporte ou dúvidas, entre em contato com a equipe de desenvolvimento.
 
 1. Video para funcionalidades do projeto : `https://youtu.be/KnfRIzJici4`
 2. github do grupo para verificação de commits : `https://github.com/alunostdspa?tab=repositories`
+3. projeto tambem atualizado neste github : `https://github.com/RodrigoPMorales/FrontEnd-1TDSPA-Sprint4`
